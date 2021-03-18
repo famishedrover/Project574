@@ -4,6 +4,13 @@ from graphviz import Source
 import pygraphviz
 from networkx.drawing import nx_agraph
 
+import networkx as nx
+
+from networkx.drawing.nx_agraph import write_dot
+
+
+
+from matplotlib import pyplot as plt 
 
 FORMULA = "H(a -> Y b)"
 
@@ -30,9 +37,22 @@ def view_graph(dfa):
 	s.view()
 
 
-view_graph(dfa)
+def plotnxgraph(G):
+	nx.draw(G, with_labels = True) 
+	plt.savefig("tmp.png")
 
 
+def getdotfile(G):
+	write_dot(G, "tx.dot")
+	with open("tx.dot", "r") as f :
+		x = f.read()
+
+	print ("DOT FILE \n")
+
+
+	return x 
+
+# view_graph(dfa)
 
 G = convertToGraph(dfa)
 
@@ -43,6 +63,64 @@ print (G.nodes)
 
 # to print edge labels
 print(G.edges(data=True))
+
+
+
+def mapping_conf(x):
+	return x + ", hi"
+
+
+
+def createGraphForConfidence(G, confidence):
+	G_hi = G.copy()
+	G_hi = nx.relabel_nodes(G_hi, lambda x : x + ", " + confidence)
+
+	print (G_hi.nodes)
+	# print (G_hi.edges(data = True))
+
+	# print(G.edges.data("label"))
+
+	edges = list(G_hi.edges(data=True))
+	print ("here")
+	for i in range(len(edges)):
+		try : 
+			edges[i][2]['label'] = edges[i][2]['label'] + ", " + confidence
+		except : 
+			# print (edges[i])
+			pass
+			# this is the init edge
+
+
+	G_hi.remove_edges_from(list(G_hi.edges()))
+	G_hi.add_edges_from(edges)
+
+	return G_hi
+
+
+def generate_hi_med_low_graphs(G):
+	G_hi = createGraphForConfidence(G, "h")
+	G_med = createGraphForConfidence(G, "m")
+	G_low = createGraphForConfidence(G, "l")
+
+	return G_hi, G_med, G_low
+
+
+def addHighMedLowStates(G):
+	# for every node we create 3 new nodes. 
+	# like 3 new graphs. as G_hi G_low G_med
+	# between these graphs 
+	# there is an edge between node for all x_low there should be an edge back to x_high
+	# for all x_med there should be an edge back to x_high
+
+	G_hi, G_med, G_low = generate_hi_med_low_graphs(G)
+
+
+
+
+	view_graph(getdotfile(G_low))
+
+
+addHighMedLowStates(G)
 
 # use networkx to convert dfa dot to networkx graph so that it can be later modified. 
 
