@@ -105,6 +105,77 @@ def generate_hi_med_low_graphs(G):
 	return G_hi, G_med, G_low
 
 
+
+def get_label(x):
+	print (x)
+	return x.split(", ")[1]
+
+def draw_edge_between_graphs(G):
+	# input is the merged graph with low med hi nodes. 
+
+	nodes = G.nodes(data=True)
+
+	newedges = ["h", "m", "l"]
+
+
+	new_edges_to_add = []
+
+	for eachnode in nodes : 
+		thisedges = G.edges(eachnode[0], data=True)
+		# get the current label.
+		cf = get_label(eachnode[0])
+
+
+
+
+		for i in newedges : 
+			if(i == cf) : 
+				continue
+
+			for eachedge in thisedges : 
+				nedge = []
+
+				nedge.append(eachedge[0])
+				nedge.append(eachedge[1].split(", ")[0] + ", " + i)
+
+				try : 
+					label = eachedge[2]["label"].split(", ")[0] + ", " + i
+					print (label)
+					# nedge.append({ "label" : label})
+				except : 
+					print ("FAIL", eachedge)
+
+				new_edges_to_add.append(nedge)
+
+
+	G.add_edges_from(new_edges_to_add)
+
+	return G 
+
+
+
+
+def merge_hi_med_low_graphs(G_hi, G_med, G_low):
+
+	G = nx.MultiDiGraph()
+
+	G.add_nodes_from(G_hi.nodes(data=True))
+	G.add_nodes_from(G_med.nodes(data=True))
+	G.add_nodes_from(G_low.nodes(data=True))
+
+	G.add_edges_from(G_hi.edges(data=True))
+	G.add_edges_from(G_med.edges(data=True))
+	G.add_edges_from(G_low.edges(data=True))
+
+
+	G = draw_edge_between_graphs(G)
+
+
+	view_graph(getdotfile(G))
+
+
+
+
 def addHighMedLowStates(G):
 	# for every node we create 3 new nodes. 
 	# like 3 new graphs. as G_hi G_low G_med
@@ -113,11 +184,15 @@ def addHighMedLowStates(G):
 	# for all x_med there should be an edge back to x_high
 
 	G_hi, G_med, G_low = generate_hi_med_low_graphs(G)
+	merge_hi_med_low_graphs(G_hi, G_med, G_low)
 
 
 
 
-	view_graph(getdotfile(G_low))
+
+
+
+	# view_graph(getdotfile(G_low))
 
 
 addHighMedLowStates(G)
