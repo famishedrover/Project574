@@ -12,7 +12,9 @@ from networkx.drawing.nx_agraph import write_dot
 
 from matplotlib import pyplot as plt 
 
-FORMULA = "H(a -> Y b)"
+FORMULA = "O(a -> Y b)"
+
+# FORMULA = "G ( a )"
 
 
 
@@ -63,6 +65,8 @@ print (G.nodes)
 
 # to print edge labels
 print(G.edges(data=True))
+
+view_graph(getdotfile(G))
 
 
 
@@ -192,10 +196,22 @@ def addHighMedLowStates(G):
 
 
 
+r = reward(s,q)
+
+
+def reward(s,q):
+	# use q and s,
+	r = reward_from_env(s)
+	q = get_q_State_from_image(s)
+	r2 = reward_from_dfa(q)
+	return f(r,r2)
+
+
+
 	# view_graph(getdotfile(G_low))
 
 
-addHighMedLowStates(G)
+# addHighMedLowStates(G)
 
 # use networkx to convert dfa dot to networkx graph so that it can be later modified. 
 

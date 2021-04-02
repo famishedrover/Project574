@@ -1,0 +1,7 @@
+Modules Required : 
+Graphviz 
+Ltl2DFA
+
+graphviz for python
+pyGraphviz
+Networkx
