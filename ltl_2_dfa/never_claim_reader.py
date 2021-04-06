@@ -11,6 +11,10 @@ class NeverClaim:
 		self.SymbolTable = set()
 		self.cleanData = self.convert_raw2cleanData()
 		self.G = None
+		self.nodes_from_raw = None
+
+		self.Nodes2NameTable = {}
+		self.Name2NodesTable = {}
 
 	def read_raw_file(self):
 		with open (self.NEVER_CLAIM_PATH) as f : 
@@ -24,6 +28,7 @@ class NeverClaim:
 		x = x[1:-1]
 
 		clean_data = []
+		nodes = []
 
 		for t in x :
 			if("::" in t) :
@@ -42,11 +47,14 @@ class NeverClaim:
 
 			elif (":" in t): 
 				t = t.replace(":", "").strip()
+				nodes.append(t)
 				# print ("Node", t)
 			else : 
 				continue
 
 			clean_data.append(t)
+
+		self.nodes_from_raw = nodes
 
 		return clean_data
 
@@ -107,6 +115,29 @@ class NeverClaim:
 
 
 		self.G = G 
+
+
+		for node in G.nodes : 
+			c = 'd'
+			# default node. 
+
+			if('init' in node) : 
+				c = 'i'
+			elif('accept' in node) : 
+				c = 'a'
+			else : 
+				c = 'd'
+
+			G.nodes[node]['type'] = c
+
+
+		# relabel nodes. 
+		all_nodes = list(G.nodes)
+		for i in range(len(all_nodes)) : 
+			self.Name2NodesTable[all_nodes[i]] = i
+			self.Nodes2NameTable[i] = all_nodes[i]
+
+		G = nx.relabel_nodes(G, self.Name2NodesTable)
 
 		return G
 
