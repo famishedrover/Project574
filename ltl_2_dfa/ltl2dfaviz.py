@@ -12,7 +12,8 @@ from networkx.drawing.nx_agraph import write_dot
 
 from matplotlib import pyplot as plt 
 
-FORMULA = "O(a -> Y b)"
+# FORMULA = "O(a -> Y b)"
+FORMULA = "F(on_edge) U G(on_edge)"
 
 # FORMULA = "G ( a )"
 
