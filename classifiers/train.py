@@ -7,6 +7,9 @@ from torchvision import transforms
 from network import Net 
 import torch
 import torch.nn as nn
+import torch.optim as optim
+
+import config
 
 def warn(*args, **kwargs):
     pass
@@ -16,15 +19,16 @@ warnings.warn = warn
 
 
 
-FLUENTS_ROOT_DIR = "./fluents"
+FLUENTS_ROOT_DIR = config.FLUENTS_ROOT_DIR
 
 fluents = misc.import_fluents(FLUENTS_ROOT_DIR)
 
-print (fluents)
+fluent_model_paths = misc.create_fluents_model_dir(root="./", fluents=fluents)
+
+print ("All Fluents ", fluents)
 
 
 
-import torch.optim as optim
 
 
 
@@ -34,12 +38,12 @@ for eachFluent in fluents :
 
 	print ("Current Fluent : ", eachFluent)
 
-	fluent_dataset = FluentsDataset(FLUENTS_ROOT_DIR, eachFluent, pos_count=2, neg_count=2, exact=False, transform = transforms.Compose([
-																											transforms.Resize([84,84]),
+	fluent_dataset = FluentsDataset(FLUENTS_ROOT_DIR, eachFluent, pos_count=config.POS_COUNT, neg_count=config.NEG_COUNT, exact=config.EXACT_NUM_SAMPLES, transform = transforms.Compose([
+																											transforms.Resize(config.TRAIN_IMAGE_SHAPE),
 																											transforms.ToTensor(),
 																											 ])  )
 
-	train_dataset, test_dataset = get_test_train_split(fluent_dataset, 0.8)
+	train_dataset, test_dataset = get_test_train_split(fluent_dataset, 0.7)
 
 	train_data_loader = torch.utils.data.DataLoader(train_dataset,
 										  batch_size=1,
@@ -56,7 +60,7 @@ for eachFluent in fluents :
 	optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 
-	for epoch in range(2):  # loop over the dataset multiple times
+	for epoch in range(config.NUM_EPOCHS):  # loop over the dataset multiple times
 
 		running_loss = 0.0
 		for i, data in enumerate(train_data_loader, 0):
@@ -75,7 +79,7 @@ for eachFluent in fluents :
 			# print statistics
 			running_loss += loss.item()
 			# if i % 2000 == 1999:    # print every 2000 mini-batches
-			print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, running_loss / 2000))
+			print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, running_loss))
 			running_loss = 0.0
 
 	print('Finished Training')
@@ -95,6 +99,17 @@ for eachFluent in fluents :
 
 	print('Accuracy of the network on the test images: %d %%' % (
 		100 * correct / total))
+
+
+	MODEL_NAME = 'model_' + str(config.POS_COUNT) + '_' + str(config.NEG_COUNT) + '_' + str(config.EXACT_NUM_SAMPLES) + '.pt'
+	MODEL_PATH = os.path.join(fluent_model_paths[eachFluent], MODEL_NAME)
+	torch.save({
+            'epoch': config.NUM_EPOCHS,
+            'model_state_dict': net.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            }, MODEL_PATH)
+
+
 
 
 

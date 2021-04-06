@@ -137,10 +137,10 @@ if __name__ == "__main__":
 	# 	tensor_image = image
 
 
-		# plt.imshow(tensor_image.permute(1,2,0))
-		# plt.show()
-		# plt.pause(5)
-		
-		
+	# plt.imshow(tensor_image.permute(1,2,0))
+	# plt.show()
+	# plt.pause(5)
+	
+	
 
 		
