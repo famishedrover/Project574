@@ -1,0 +1,31 @@
+never { /* F(left & G(!left | Fbottom)) */
+T0_init:
+  if
+  :: (!(left)) -> goto T0_init
+  :: ((bottom) && (left)) -> goto accept_S1
+  :: ((!(bottom)) && (left)) -> goto T0_S2
+  fi;
+accept_S1:
+  if
+  :: ((bottom) || (!(left))) -> goto accept_S1
+  :: ((!(bottom)) && (left)) -> goto T0_S2
+  fi;
+T0_S2:
+  if
+  :: (bottom) -> goto accept_S1
+  :: (!(bottom)) -> goto T0_S2
+  fi;
+}
+
+# this is comment ==================================================
+COMMENTS MUST ONLY BEING AT THE END
+
+This is for LTL 
+
+F(left & G(left -> F(bottom)))
+
+
+Eventually left musts be true, and once it was true, bottom should have been true after some steps.
+
+Advice should be wrapped around with F. as we expect an advice A to be eventually true. So F(A)
+unless the advice is supposed to be true always in which case use G(A.

@@ -7,3 +7,6 @@ T0_init:
 accept_all:
   skip
 }
+
+# this is comment ==================================================
+COMMENTS MUST ONLY BEING AT THE END

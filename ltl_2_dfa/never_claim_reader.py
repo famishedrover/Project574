@@ -19,6 +19,8 @@ class NeverClaim:
 	def read_raw_file(self):
 		with open (self.NEVER_CLAIM_PATH) as f : 
 			x = f.read()
+
+		x = x.split("#")[0]
 		return x
 
 	def convert_raw2cleanData(self):
@@ -40,6 +42,7 @@ class NeverClaim:
 				# t[0] = t[0][1:-1] # remove paranthesis
 				t[0] = self.fix_edge(t[0])
 				self.populate_symbol_table(t[0])
+				t[0] = self.fix_edge_for_eval(t[0])
 				t[1] = t[1].replace("goto ","")
 
 
@@ -90,7 +93,12 @@ class NeverClaim:
 			self.SymbolTable.add(t)
 
 
-
+	def fix_edge_for_eval(self, t):
+		# replace <token> with s['<token>']
+		for i in self.SymbolTable : 
+			NEW_SYM = 's["'+i+'"]'
+			t = t.replace(i, NEW_SYM)
+		return t
 
 	def getnxGraph(self):
 
