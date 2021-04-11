@@ -60,6 +60,12 @@ class DFA (BaseGraph):
 			if(G.nodes[i]['type'] == 'i') : 
 				return i
 
+	def get_reward(self):
+		# states can be "i", "a", "d"
+		reward = 0
+		if self.G.nodes[self.current_state]['type'] == 'a' :
+			reward = 1
+		return reward
 
 	def draw_graph(self):
 

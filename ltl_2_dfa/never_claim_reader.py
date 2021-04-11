@@ -125,6 +125,13 @@ class NeverClaim:
 		self.G = G 
 
 
+		# Handles cases when there is only one edge to itself, represented by "skip all"
+		# which is a self loop as true.
+
+		for node in G.nodes : 
+			if(len(G.edges(node)) == 0): 
+				G.add_edge(node, node, data='true')
+
 		for node in G.nodes : 
 			c = 'd'
 			# default node. 
@@ -164,7 +171,7 @@ class NeverClaim:
 if __name__ == "__main__" :
 	# populate_symbol_table(SymbolTable, "(not(on_edge))")
 
-	ncm = NeverClaim("./ltl_2_dfa/never_claim.txt")
+	ncm = NeverClaim("./neverClaimFiles/never_claim_4.txt")
 
 	print ("Symbol Table : ", ncm.SymbolTable)
 
@@ -176,4 +183,4 @@ if __name__ == "__main__" :
 	print("Graph")
 	G = ncm.getnxGraph()
 	print (G.nodes())
-	print (G.edges())
+	print (G.edges(data=True))

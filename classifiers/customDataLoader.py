@@ -38,7 +38,7 @@ class FluentsDataset(Dataset):
 		self.allPaths = self.positive_paths + self.negative_paths
 		random.shuffle(self.allPaths)
 
-		print (self.allPaths)
+		# print (self.allPaths)
 
 	def select_batch(self):
 		POSITIVE_PATH = os.path.join(self.root_dir, self.concept_name, "positive")
@@ -75,6 +75,8 @@ class FluentsDataset(Dataset):
 		rgba_image = PIL.Image.open(img_name)
 		image  = rgba_image.convert('RGB')
 
+
+		print (image.size)
 		thisclass = 1
 
 		if ("negative" in img_name) : 
@@ -108,7 +110,7 @@ def get_test_train_split(full_dataset, percent=0.8):
 	return train_dataset, test_dataset
 
 if __name__ == "__main__":
-	onTop_dataset = FluentsDataset("./fluents", "onTop", pos_count=2, neg_count=1, exact=False, transform = transforms.Compose([
+	onTop_dataset = FluentsDataset("./fluents", "bottom_left_c", pos_count=2, neg_count=1, exact=False, transform = transforms.Compose([
 																											transforms.Resize([720,720]),
 																											transforms.ToTensor(),
 																											 ])  )
@@ -129,12 +131,13 @@ if __name__ == "__main__":
 	print (len(train_data_loader))
 	print (len(test_data_loader))
 
-	# for x in train_data_loader : 
-	# 	images = x["image"]
-	# 	labels = x["class"]
 
-	# 	image = images[0]
-	# 	tensor_image = image
+	for x in train_data_loader : 
+		images = x["image"]
+		labels = x["class"]
+
+		image = images[0]
+		tensor_image = image
 
 
 	# plt.imshow(tensor_image.permute(1,2,0))
