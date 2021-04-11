@@ -6,8 +6,8 @@ import torch_ac
 import tensorboardX
 import sys
 
-import utils
-from model import ACModel
+import torch_rl.utils as utils
+from torch_rl.model import ACModel
 import util
 
 

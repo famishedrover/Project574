@@ -9,5 +9,5 @@ Networkx
 
 For RL:
 torch==1.8.1
-nvtensorboardX>=1.6
+tensorboardX>=1.6
 numpy>=1.3

@@ -3,7 +3,7 @@ import time
 import numpy
 import torch
 
-import utils
+import torch_rl.utils as utils
 
 
 # Parse arguments
