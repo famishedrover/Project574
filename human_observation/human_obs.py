@@ -15,7 +15,8 @@ class DFAWrapper() :
 	def get_states_count(self):
 		return len(self.dfa.G.nodes)
 
-	def transition_on_image(self,image):
+	def get_dfa_state(self,image):
+		# Transition on this image. 
 		prediction_list = self.classifier.make_prediction(image)
 		self.dfa.transition(prediction_list)
 		return self.dfa.current_state

@@ -29,7 +29,9 @@ while MAX_STEPS :
 	image = obs['image']
 	print (image.shape)
 
-	q_next_state = dfa.transition_on_image(image)
+	# get_dfa_state
+
+	q_next_state = dfa.get_dfa_state(image)
 	reward = dfa.get_reward()
 
 	env.render()

@@ -1,14 +1,19 @@
-never { /* Fbottom_left_c */
+never { /* FGis_on_edge */
 T0_init:
   if
-  :: (bottom_left_c) -> goto accept_all
-  :: (!(bottom_left_c)) -> goto T0_init
+  :: (true) -> goto T0_init
+  :: (is_on_edge) -> goto accept_S1
   fi;
-accept_all:
-  skip
+accept_S1:
+  if
+  :: (is_on_edge) -> goto accept_S1
+  :: (!(is_on_edge)) -> goto T0_S2
+  fi;
+T0_S2:
+  if
+  :: (true) -> goto T0_S2
+  fi;
 }
-
-
 
 # COMMENT
 
