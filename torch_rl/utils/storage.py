@@ -4,7 +4,6 @@ import torch
 import logging
 import sys
 
-import utils
 
 
 def create_folders_if_necessary(path):
@@ -48,7 +47,7 @@ def get_model_state(model_dir):
 
 def get_txt_logger(model_dir):
     path = os.path.join(model_dir, "log.txt")
-    utils.create_folders_if_necessary(path)
+    create_folders_if_necessary(path)
 
     logging.basicConfig(
         level=logging.INFO,
@@ -64,6 +63,6 @@ def get_txt_logger(model_dir):
 
 def get_csv_logger(model_dir):
     csv_path = os.path.join(model_dir, "log.csv")
-    utils.create_folders_if_necessary(csv_path)
+    create_folders_if_necessary(csv_path)
     csv_file = open(csv_path, "a")
     return csv_file, csv.writer(csv_file)

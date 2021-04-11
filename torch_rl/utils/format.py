@@ -6,7 +6,11 @@ import torch
 import torch_ac
 import gym
 
-import utils
+from torch_rl.utils.agent import *
+from torch_rl.utils.env import *
+from torch_rl.utils.other import *
+from torch_rl.utils.storage import *
+
 
 def get_obss_preprocessor(obs_space):
     # Check if obs_space is an image space
