@@ -8,7 +8,6 @@ import gym
 
 import utils
 
-
 def get_obss_preprocessor(obs_space):
     # Check if obs_space is an image space
     if isinstance(obs_space, gym.spaces.Box):

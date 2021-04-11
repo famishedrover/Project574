@@ -3,7 +3,7 @@ import time
 import torch
 from torch_ac.utils.penv import ParallelEnv
 
-import utils
+import rl.utils as utils
 
 
 # Parse arguments

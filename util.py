@@ -27,7 +27,7 @@ def update_reward(dfa_list, reward, image):
         one_hot = image[0,0,i:i+n_states]
         i = i + n_states  # to point to the next dfa one hot index
         index = one_hot.argmax()
-        r += dfa.get_reward(index)  # yet to be implemented
+        r += dfa.get_reward()  # yet to be implemented
 
     return reward + r
 
