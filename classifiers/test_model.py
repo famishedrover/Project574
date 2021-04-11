@@ -1,10 +1,10 @@
 import torch
-from network import Net 
+from classifiers.network import Net 
 import torch.optim as optim
 from torchvision import transforms
 import PIL.Image
 
-import config
+import classifiers.config as config
 
 MODEL_PATH = './fluents_models/is_on_edge_clear/model_150_150_False.pt'
 
@@ -43,6 +43,11 @@ def read_image_for_network(path):
 	return image
 
 
+# image = image_transforms(env.render(image=True))
+
+
+# two things 
+# first - > wrap classifier with dfa, reward
 
 
 IMAGE_PATH = "./fluents/is_on_edge_clear/positive/1.png"

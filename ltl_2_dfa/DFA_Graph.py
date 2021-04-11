@@ -1,7 +1,7 @@
 import networkx as nx 
 
-from never_claim_reader import NeverClaim 
-from base_graph import BaseGraph
+from ltl_2_dfa.never_claim_reader import NeverClaim 
+from ltl_2_dfa.base_graph import BaseGraph
 
 from matplotlib import pyplot as plt 
 
@@ -13,7 +13,7 @@ import time
 import os 
 
 
-TEMPORARY_DIR = "./tmp"
+TEMPORARY_DIR = "./ltl_2_dfa/tmp"
 
 if not os.path.exists(TEMPORARY_DIR):
 	os.mkdir(TEMPORARY_DIR)
@@ -100,8 +100,10 @@ class DFA (BaseGraph):
 		A.draw(FILE_NAME)
 
 
+
+
 if __name__ == "__main__" : 
-	dfa = DFA("never_claim_3.txt")
+	dfa = DFA("./ltl_2_dfa/neverClaimFiles/never_claim_3.txt")
 	G = dfa.G 
 	print(G.nodes(data=True))
 

@@ -164,7 +164,7 @@ class NeverClaim:
 if __name__ == "__main__" :
 	# populate_symbol_table(SymbolTable, "(not(on_edge))")
 
-	ncm = NeverClaim("never_claim.txt")
+	ncm = NeverClaim("./ltl_2_dfa/never_claim.txt")
 
 	print ("Symbol Table : ", ncm.SymbolTable)
 

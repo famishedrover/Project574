@@ -1,5 +1,5 @@
 import os 
-import config
+import classifiers.config as config
 
 def import_fluents(root):
 	fluents = os.listdir(root)

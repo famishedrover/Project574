@@ -1,15 +1,15 @@
-from customDataLoader import FluentsDataset, get_test_train_split
+from classifiers.customDataLoader import FluentsDataset, get_test_train_split
 import os 
-import misc
+import classifiers.misc as misc
 
 from torchvision import transforms
 
-from network import Net 
+from classifiers.network import Net 
 import torch
 import torch.nn as nn
 import torch.optim as optim
 
-import config
+import classifiers.config as config
 
 def warn(*args, **kwargs):
     pass

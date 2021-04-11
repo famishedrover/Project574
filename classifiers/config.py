@@ -1,5 +1,5 @@
-FLUENTS_ROOT_DIR = "./fluents"
-FLUENTS_MODEL_DIR_NAME = "fluents_models"
+FLUENTS_ROOT_DIR = "./classifiers/fluents"
+FLUENTS_MODEL_DIR_NAME = "./classifiers/fluents_models"
 
 
 POS_COUNT = 150
