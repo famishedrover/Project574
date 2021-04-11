@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import torch
+import util
 
 from torch_ac.format import default_preprocess_obss
 from torch_ac.utils import DictList, ParallelEnv
@@ -8,7 +9,7 @@ class BaseAlgo(ABC):
     """The base class for RL algorithms."""
 
     def __init__(self, envs, acmodel, device, num_frames_per_proc, discount, lr, gae_lambda, entropy_coef,
-                 value_loss_coef, max_grad_norm, recurrence, preprocess_obss, reshape_reward):
+                 value_loss_coef, max_grad_norm, recurrence, preprocess_obss, reshape_reward, dfa_list):
         """
         Initializes a `BaseAlgo` instance.
 
@@ -44,7 +45,7 @@ class BaseAlgo(ABC):
         """
 
         # Store parameters
-
+        self.dfa_list = dfa_list
         self.env = ParallelEnv(envs)
         self.acmodel = acmodel
         self.device = device
@@ -78,7 +79,7 @@ class BaseAlgo(ABC):
 
         shape = (self.num_frames_per_proc, self.num_procs)
 
-        self.obs = self.env.reset()
+        self.obs = util.update_obs(self.dfa_list, self.env.reset())
         self.obss = [None]*(shape[0])
         if self.acmodel.recurrent:
             self.memory = torch.zeros(shape[1], self.acmodel.memory_size, device=self.device)
@@ -139,7 +140,8 @@ class BaseAlgo(ABC):
             # Update experiences values
 
             self.obss[i] = self.obs
-            self.obs = obs
+            self.obs = util.update_obs(self.dfa_list, obs)
+            reward = util.update_reward(self.dfa_list, reward, self.obs)
             if self.acmodel.recurrent:
                 self.memories[i] = self.memory
                 self.memory = memory

@@ -9,6 +9,5 @@ Networkx
 
 For RL:
 torch==1.8.1
-gym-minigrid
-tensorboardX>=1.6
+nvtensorboardX>=1.6
 numpy>=1.3
