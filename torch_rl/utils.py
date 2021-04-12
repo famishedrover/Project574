@@ -20,7 +20,7 @@ import os
 import torch
 import logging
 import sys
-
+from gym_minigrid.wrappers import *
 
 
 class Agent:
@@ -81,6 +81,8 @@ class Agent:
 def make_env(env_key, seed=None):
     env = gym.make(env_key)
     env.seed(seed)
+    env = RGBImgObsWrapper(env)
+    # env = ImgObsWrapper(env)
     return env
 
 

@@ -24,15 +24,13 @@ def get_obss_preprocessor(obs_space):
 
     # Check if it is a MiniGrid observation space
     elif isinstance(obs_space, gym.spaces.Dict) and list(obs_space.spaces.keys()) == ["image"]:
-        obs_space = {"image": obs_space.spaces["image"].shape, "text": 100}
+        obs_space = {"image": obs_space.spaces["image"].shape}
 
-        vocab = Vocabulary(obs_space["text"])
         def preprocess_obss(obss, device=None):
             return torch_ac.DictList({
                 "image": preprocess_images([obs["image"] for obs in obss], device=device),
-                "text": preprocess_texts([obs["mission"] for obs in obss], vocab, device=device)
+                "dfa_states": preprocess_dfa_states([obs["dfa_states"] for obs in obss], device=device)
             })
-        preprocess_obss.vocab = vocab
 
     else:
         raise ValueError("Unknown observation space: " + str(obs_space))
@@ -44,6 +42,10 @@ def preprocess_images(images, device=None):
     # Bug of Pytorch: very slow if not first converted to numpy array
     images = numpy.array(images)
     return torch.tensor(images, device=device, dtype=torch.float)
+
+def preprocess_dfa_states(dfa_state,device=None):
+    dfa_state = numpy.array(dfa_state)
+    return torch.tensor(dfa_state,device=device,dtype=torch.float)
 
 
 def preprocess_texts(texts, vocab, device=None):

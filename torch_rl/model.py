@@ -16,7 +16,7 @@ def init_params(m):
 
 
 class ACModel(nn.Module, torch_ac.RecurrentACModel):
-    def __init__(self, obs_space, action_space, use_memory=False, use_text=False):
+    def __init__(self, obs_space, action_space, use_memory=False, use_text=False, n_states = 0):
         super().__init__()
 
         # Decide which components are enabled
@@ -37,21 +37,13 @@ class ACModel(nn.Module, torch_ac.RecurrentACModel):
         m = obs_space["image"][1]
         self.image_embedding_size = ((n-1)//2-2)*((m-1)//2-2)*64
 
-        # Define memory
-        if self.use_memory:
-            self.memory_rnn = nn.LSTMCell(self.image_embedding_size, self.semi_memory_size)
 
         # Define text embedding
-        if self.use_text:
-            self.word_embedding_size = 32
-            self.word_embedding = nn.Embedding(obs_space["text"], self.word_embedding_size)
-            self.text_embedding_size = 128
-            self.text_rnn = nn.GRU(self.word_embedding_size, self.text_embedding_size, batch_first=True)
 
         # Resize image embedding
         self.embedding_size = self.semi_memory_size
-        if self.use_text:
-            self.embedding_size += self.text_embedding_size
+
+        self.embedding_size += n_states
 
         # Define actor's model
         self.actor = nn.Sequential(
@@ -79,21 +71,15 @@ class ACModel(nn.Module, torch_ac.RecurrentACModel):
         return self.image_embedding_size
 
     def forward(self, obs, memory):
+
         x = obs.image.transpose(1, 3).transpose(2, 3)
         x = self.image_conv(x)
         x = x.reshape(x.shape[0], -1)
+        x = torch.cat((x,obs.dfa_states),dim=1)
 
-        if self.use_memory:
-            hidden = (memory[:, :self.semi_memory_size], memory[:, self.semi_memory_size:])
-            hidden = self.memory_rnn(x, hidden)
-            embedding = hidden[0]
-            memory = torch.cat(hidden, dim=1)
-        else:
-            embedding = x
 
-        if self.use_text:
-            embed_text = self._get_embed_text(obs.text)
-            embedding = torch.cat((embedding, embed_text), dim=1)
+
+        embedding = x
 
         x = self.actor(embedding)
         dist = Categorical(logits=F.log_softmax(x, dim=1))
