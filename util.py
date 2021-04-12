@@ -3,11 +3,10 @@ import numpy as np
 import os
 
 def update_obs(dfa_list, images):
-    l = False
-
-    # image = np.asarray(image)
-    q_states = []
-
+    flag = False
+    if type(images) != type([]) and type(images) != type((1,)):
+        images = [images]
+        flag = True
     for i in range(len(images)):
 
         image = images[i]
@@ -28,10 +27,15 @@ def update_obs(dfa_list, images):
 
         image["dfa_states"] = final_vector
 
-
+    if flag:
+        images = images[0]
     return images
 
 def update_reward(dfa_list, reward):
+    flag = False
+    if type(reward) != type((1,)) and type(reward) != type([1,2]):
+        reward = [reward]
+        flag = True
     reward = list(reward)
     i = 3  # initializing to 3 as first three channels are RGB for the actual image.
     for i in range(len(dfa_list)):
@@ -40,6 +44,9 @@ def update_reward(dfa_list, reward):
         for dfa in dfas:
             r += dfa.get_reward()  # yet to be implemented
         reward[i] = reward[i] + r
+
+    if flag:
+        return reward[0]
 
     return tuple(reward)
 

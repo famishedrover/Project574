@@ -118,12 +118,17 @@ if "vocab" in status:
 txt_logger.info("Observations preprocessor loaded")
 
 # Load model
+dfa = True
+# dfa = False
 
-# dfa_list = util.get_dfa_list(args.procs)
-dfa_list = []
-n_states = 0
-# for dfa in dfa_list[0]:
-#     n_states += dfa.get_states_count()
+if dfa:
+    dfa_list = util.get_dfa_list(args.procs)
+    n_states = 0
+    for dfa in dfa_list[0]:
+        n_states += dfa.get_states_count()
+else:
+    dfa_list = []
+    n_states = 0
 
 acmodel = ACModel(obs_space, envs[0].action_space, args.mem, args.text, n_states)
 if "model_state" in status:
