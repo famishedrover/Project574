@@ -7,6 +7,7 @@ import torch_rl.utils as utils
 
 
 # Parse arguments
+import util
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--env", required=True,
@@ -29,6 +30,7 @@ parser.add_argument("--memory", action="store_true", default=False,
                     help="add a LSTM to the model")
 parser.add_argument("--text", action="store_true", default=False,
                     help="add a GRU to the model")
+# parser.add_argument("--dfa", action="store_true", type=bool, default=True, help="is running with advise")
 
 args = parser.parse_args()
 
@@ -41,6 +43,19 @@ utils.seed(args.seed)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}\n")
 
+# dfa = False
+dfa = True
+
+if dfa:
+    dfa_list = util.get_dfa_list(1)
+    # dfa_list = []
+    n_states = 0
+    for dfa in dfa_list[0]:
+        n_states += dfa.get_states_count()
+else:
+    dfa_list = []
+    n_states = 0
+
 # Load environment
 
 env = utils.make_env(args.env, args.seed)
@@ -52,7 +67,7 @@ print("Environment loaded\n")
 
 model_dir = utils.get_model_dir(args.model)
 agent = utils.Agent(env.observation_space, env.action_space, model_dir,
-                    device=device, argmax=args.argmax, use_memory=args.memory, use_text=args.text)
+                    device=device, argmax=args.argmax, use_memory=args.memory, use_text=args.text, n_states= n_states)
 print("Agent loaded\n")
 
 # Run the agent
@@ -66,6 +81,7 @@ env.render('human')
 
 for episode in range(args.episodes):
     obs = env.reset()
+    obs = util.update_obs(dfa_list,obs)
 
     while True:
         env.render('human')
@@ -74,6 +90,8 @@ for episode in range(args.episodes):
 
         action = agent.get_action(obs)
         obs, reward, done, _ = env.step(action)
+        obs = util.update_obs(dfa_list,obs)
+        reward = util.update_reward(dfa_list,reward)
         agent.analyze_feedback(reward, done)
 
         if done or env.window.closed:

@@ -3,36 +3,50 @@ import numpy as np
 import os
 
 def update_obs(dfa_list, images):
-    l = False
-
-    # image = np.asarray(image)
-    q_states = []
+    flag = False
+    if type(images) != type([]) and type(images) != type((1,)):
+        images = [images]
+        flag = True
     for i in range(len(images)):
-        dfas = dfa_list[i]
+
         image = images[i]
         final_vector = None
-        for dfa in dfas:
-            state = dfa.get_dfa_state(image["image"])  # yet to be implemented
-            one_hot = np.zeros(shape=(dfa.get_states_count(),))
-            one_hot[int(state)] = 1  # assuming states are starting from 1 to n
-            if final_vector is None:
-                final_vector = one_hot
-            else:
-                final_vector = np.concatenate((final_vector,one_hot),axis=0)
+        try:
+            dfas = dfa_list[i]
+        except:
+            final_vector = []
+        else:
+            for dfa in dfas:
+                state = dfa.get_dfa_state(image["image"])  # yet to be implemented
+                one_hot = np.zeros(shape=(dfa.get_states_count(),))
+                one_hot[int(state)] = 1  # assuming states are starting from 1 to n
+                if final_vector is None:
+                    final_vector = one_hot
+                else:
+                    final_vector = np.concatenate((final_vector,one_hot),axis=0)
 
         image["dfa_states"] = final_vector
 
+    if flag:
+        images = images[0]
     return images
 
 def update_reward(dfa_list, reward):
+    flag = False
+    if type(reward) != type((1,)) and type(reward) != type([1,2]):
+        reward = [reward]
+        flag = True
     reward = list(reward)
     i = 3  # initializing to 3 as first three channels are RGB for the actual image.
-    for i in range(len(reward)):
+    for i in range(len(dfa_list)):
         r = 0
         dfas = dfa_list[i]
         for dfa in dfas:
             r += dfa.get_reward()  # yet to be implemented
         reward[i] = reward[i] + r
+
+    if flag:
+        return reward[0]
 
     return tuple(reward)
 

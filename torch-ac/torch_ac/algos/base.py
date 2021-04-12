@@ -139,6 +139,8 @@ class BaseAlgo(ABC):
 
             obs, reward, done, _ = self.env.step(action.cpu().numpy())
 
+            reward = tuple([x*100 for x in reward])
+
             # Update experiences values
 
             self.obss[i] = self.obs
