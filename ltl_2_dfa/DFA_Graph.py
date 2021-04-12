@@ -84,8 +84,8 @@ class DFA (BaseGraph):
 
 		G = self.G 
 
-		print(G.edges)
-		print(G.nodes)
+		# print(G.edges)
+		# print(G.nodes)
 
 		my_pos = nx.spring_layout(G, seed = 100)
 

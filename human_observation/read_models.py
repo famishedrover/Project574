@@ -75,7 +75,7 @@ class RunClassifier :
 			probs = GET_SOFTMAX(self.models[x](tensor_image)).detach()[0]
 			pos_probs = probs[1]
 
-			print ("fluent : ", x, pos_probs)
+			# print ("fluent : ", x, pos_probs)
 
 			if pos_probs > config.THRESHOLD  : 
 				self.prediction_dict[x] = True
