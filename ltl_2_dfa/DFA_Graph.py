@@ -44,14 +44,27 @@ class DFA (BaseGraph):
 			# print ("Evaluation for", e[2]["data"], " is ",evaluation)
 			if(evaluation) : 
 				# next node.
-				true_transitions.append(e[1])
+				true_transitions.append([e[1], e[2]["data"]])
 
 		# if multiple transitions are possible, pick the first one. 
 		# Make the transition.
 		assert len(true_transitions)>0, "DFA Found no valid transitions"
 
-		self.current_state = true_transitions[0]
-		self.counter += 1
+		# pick one transition out of true_transitions. 
+
+		if(len(true_transitions) != 1) :  
+			# pick state without true.
+			true_transition_idx = -1
+			for ix in range(len(true_transitions)) :
+				if("true" in true_transitions[ix][1]) : 
+					true_transition_idx = ix
+
+			if(true_transition_idx >=0 ):
+				del true_transitions[true_transition_idx]
+
+		
+		self.current_state = true_transitions[0][0]
+		self.counter += 1	
 
 
 	def getInitNode(self):
@@ -60,6 +73,12 @@ class DFA (BaseGraph):
 			if(G.nodes[i]['type'] == 'i') : 
 				return i
 
+	def get_reward(self):
+		# states can be "i", "a", "d"
+		reward = 0
+		if self.G.nodes[self.current_state]['type'] == 'a' :
+			reward = 1
+		return reward
 
 	def draw_graph(self):
 
