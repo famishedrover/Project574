@@ -26,7 +26,7 @@ parser.add_argument("--seed", type=int, default=1,
                     help="random seed (default: 1)")
 parser.add_argument("--log-interval", type=int, default=1,
                     help="number of updates between two logs (default: 1)")
-parser.add_argument("--save-interval", type=int, default=10,
+parser.add_argument("--save-interval", type=int, default=1,
                     help="number of updates between two saves (default: 10, 0 means no saving)")
 parser.add_argument("--procs", type=int, default=16,
                     help="number of processes (default: 16)")
@@ -119,10 +119,11 @@ txt_logger.info("Observations preprocessor loaded")
 
 # Load model
 
-dfa_list = util.get_dfa_list(args.procs)
+# dfa_list = util.get_dfa_list(args.procs)
+dfa_list = []
 n_states = 0
-for dfa in dfa_list[0]:
-    n_states += dfa.get_states_count()
+# for dfa in dfa_list[0]:
+#     n_states += dfa.get_states_count()
 
 acmodel = ACModel(obs_space, envs[0].action_space, args.mem, args.text, n_states)
 if "model_state" in status:
@@ -185,9 +186,9 @@ while num_frames < args.frames:
         header += ["entropy", "value", "policy_loss", "value_loss", "grad_norm"]
         data += [logs["entropy"], logs["value"], logs["policy_loss"], logs["value_loss"], logs["grad_norm"]]
 
-        txt_logger.info(
-            "U {} | F {:06} | FPS {:04.0f} | D {} | rR:μσmM {:.2f} {:.2f} {:.2f} {:.2f} | F:μσmM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | pL {:.3f} | vL {:.3f} | ∇ {:.3f}"
-            .format(*data))
+        # txt_logger.info(
+        #     "U {} | F {:06} | FPS {:04.0f} | D {} | rR:μσmM {:.2f} {:.2f} {:.2f} {:.2f} | F:μσmM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | pL {:.3f} | vL {:.3f} | ∇ {:.3f}"
+        #     .format(*data))
 
         header += ["return_" + key for key in return_per_episode.keys()]
         data += return_per_episode.values()
@@ -203,6 +204,7 @@ while num_frames < args.frames:
     # Save status
 
     if args.save_interval > 0 and update % args.save_interval == 0:
+        print("update: {}".format(update))
         status = {"num_frames": num_frames, "update": update,
                   "model_state": acmodel.state_dict(), "optimizer_state": algo.optimizer.state_dict()}
         if hasattr(preprocess_obss, "vocab"):
