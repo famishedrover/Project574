@@ -1,0 +1,9 @@
+never { /* Ftop_right_c */
+T0_init:
+  if
+  :: (top_right_c) -> goto accept_all
+  :: (!(top_right_c)) -> goto T0_init
+  fi;
+accept_all:
+  skip
+}
