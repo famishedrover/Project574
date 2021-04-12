@@ -28,7 +28,8 @@ def get_obss_preprocessor(obs_space):
 
         def preprocess_obss(obss, device=None):
             return torch_ac.DictList({
-                "image": preprocess_images([obs["image"] for obs in obss], device=device)
+                "image": preprocess_images([obs["image"] for obs in obss], device=device),
+                "dfa_states": preprocess_dfa_states([obs["dfa_states"] for obs in obss], device=device)
             })
 
     else:
@@ -41,6 +42,10 @@ def preprocess_images(images, device=None):
     # Bug of Pytorch: very slow if not first converted to numpy array
     images = numpy.array(images)
     return torch.tensor(images, device=device, dtype=torch.float)
+
+def preprocess_dfa_states(dfa_state,device=None):
+    dfa_state = numpy.array(dfa_state)
+    return torch.tensor(dfa_state,device=device,dtype=torch.float)
 
 
 def preprocess_texts(texts, vocab, device=None):

@@ -65,7 +65,7 @@ parser.add_argument("--text", action="store_true", default=False,
 
 args = parser.parse_args()
 
-args.mem = args.recurrence > 1
+args.mem = False
 
 # Set run dir
 
@@ -119,10 +119,10 @@ txt_logger.info("Observations preprocessor loaded")
 
 # Load model
 
-dfa_list = util.get_dfa_list()
+dfa_list = util.get_dfa_list(args.procs)
 n_states = 0
-for dfa in dfa_list:
-    n_states += dfa.n_states
+for dfa in dfa_list[0]:
+    n_states += dfa.get_states_count()
 
 acmodel = ACModel(obs_space, envs[0].action_space, args.mem, args.text, n_states)
 if "model_state" in status:
