@@ -228,3 +228,14 @@ ACModel(
 
 Optimizer loaded
 
+/home/naman/Project574/torch_rl/scripts/train.py --algo ppo --env MiniGrid-Empty-8x8-v0 --model GridWorld_DFA --save-interval 10 --frames-per-proc 100 --frames 1000000
+
+Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-Empty-8x8-v0', epochs=4, frames=1000000, frames_per_proc=100, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='GridWorld_DFA', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cuda
+
+Environments loaded
+
+Training status loaded
+
+Observations preprocessor loaded
