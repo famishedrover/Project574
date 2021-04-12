@@ -119,7 +119,12 @@ txt_logger.info("Observations preprocessor loaded")
 
 # Load model
 
-acmodel = ACModel(obs_space, envs[0].action_space, args.mem, args.text)
+dfa_list = util.get_dfa_list()
+n_states = 0
+for dfa in dfa_list:
+    n_states += dfa.n_states
+
+acmodel = ACModel(obs_space, envs[0].action_space, args.mem, args.text, n_states)
 if "model_state" in status:
     acmodel.load_state_dict(status["model_state"])
 acmodel.to(device)
@@ -128,7 +133,6 @@ txt_logger.info("{}\n".format(acmodel))
 
 # Load algo
 
-dfa_list = util.get_dfa_list()
 
 if args.algo == "a2c":
     algo = torch_ac.A2CAlgo(envs, acmodel, device, args.frames_per_proc, args.discount, args.lr, args.gae_lambda,
@@ -137,7 +141,7 @@ if args.algo == "a2c":
 elif args.algo == "ppo":
     algo = torch_ac.PPOAlgo(envs, acmodel, device, args.frames_per_proc, args.discount, args.lr, args.gae_lambda,
                             args.entropy_coef, args.value_loss_coef, args.max_grad_norm, args.recurrence,
-                            args.optim_eps, args.clip_eps, args.epochs, args.batch_size, preprocess_obss, dfa_list)
+                            args.optim_eps, args.clip_eps, args.epochs, args.batch_size, preprocess_obss, dfa_list=dfa_list)
 else:
     raise ValueError("Incorrect algorithm name: {}".format(args.algo))
 

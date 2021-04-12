@@ -24,15 +24,12 @@ def get_obss_preprocessor(obs_space):
 
     # Check if it is a MiniGrid observation space
     elif isinstance(obs_space, gym.spaces.Dict) and list(obs_space.spaces.keys()) == ["image"]:
-        obs_space = {"image": obs_space.spaces["image"].shape, "text": 100}
+        obs_space = {"image": obs_space.spaces["image"].shape}
 
-        vocab = Vocabulary(obs_space["text"])
         def preprocess_obss(obss, device=None):
             return torch_ac.DictList({
-                "image": preprocess_images([obs["image"] for obs in obss], device=device),
-                "text": preprocess_texts([obs["mission"] for obs in obss], vocab, device=device)
+                "image": preprocess_images([obs["image"] for obs in obss], device=device)
             })
-        preprocess_obss.vocab = vocab
 
     else:
         raise ValueError("Unknown observation space: " + str(obs_space))

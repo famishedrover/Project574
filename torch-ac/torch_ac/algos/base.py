@@ -80,6 +80,7 @@ class BaseAlgo(ABC):
         shape = (self.num_frames_per_proc, self.num_procs)
 
         self.obs = util.update_obs(self.dfa_list, self.env.reset())
+        self.obs = self.env.reset()
         self.obss = [None]*(shape[0])
         if self.acmodel.recurrent:
             self.memory = torch.zeros(shape[1], self.acmodel.memory_size, device=self.device)
@@ -141,7 +142,8 @@ class BaseAlgo(ABC):
 
             self.obss[i] = self.obs
             self.obs = util.update_obs(self.dfa_list, obs)
-            reward = util.update_reward(self.dfa_list, reward, self.obs)
+            # self.obs = obs
+            reward = util.update_reward(self.dfa_list, reward)
             if self.acmodel.recurrent:
                 self.memories[i] = self.memory
                 self.memory = memory

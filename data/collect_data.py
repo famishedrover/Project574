@@ -32,7 +32,7 @@ class OnEdgeDataCollector(object):
                     name = str(c_neg) + ".png"
                 noisy_a = self.noisy(a)
                 i += 1
-                cv2.imwrite(dir+name,cv2.cvtColor(noisy_a, cv2.COLOR_RGB2BGR))
+                cv2.imwrite(dir+name,cv2.cvtColor(obs["image"], cv2.COLOR_RGB2BGR))
                 action = self.env.action_space.sample()
                 obs,reward,done,info = self.env.step(action)
                 if c_pos > self.number_of_images and c_neg > self.number_of_images:
