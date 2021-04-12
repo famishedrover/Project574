@@ -1,13 +1,11 @@
-Modules Required for classification: 
 Graphviz 
 Ltl2DFA
-
-graphviz for python
 pyGraphviz
 Networkx
 
-
-For RL:
+gym
+gym-minigrid
 torch==1.8.1
+torchvision
 tensorboardX>=1.6
 numpy>=1.3
