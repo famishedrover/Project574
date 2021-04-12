@@ -3,7 +3,7 @@ from gym_minigrid.wrappers import *
 
 LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_4.txt"
 
-dfa = DFAWrapper(LTL_PATH)
+dfa = DFAWrapper(LTL_PATH, 1)
 n = 6
 
 env_name = "MiniGrid-Empty-{}x{}-v0".format(n+2,n+2)

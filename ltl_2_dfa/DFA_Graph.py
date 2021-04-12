@@ -20,8 +20,9 @@ if not os.path.exists(TEMPORARY_DIR):
 
 
 class DFA (BaseGraph):
-	def __init__(self, PATH) : 
+	def __init__(self, PATH, reward=1) : 
 		# PATH : NEVERCLAIM PATH 
+
 		self.ncm = NeverClaim(PATH)
 		self.G = self.ncm.getnxGraph()
 
@@ -31,6 +32,8 @@ class DFA (BaseGraph):
 		self.NX_SEED = 100
 
 		self.counter = 0
+
+		self.terminal_reward = reward
 
 
 
@@ -77,7 +80,7 @@ class DFA (BaseGraph):
 		# states can be "i", "a", "d"
 		reward = 0
 		if self.G.nodes[self.current_state]['type'] == 'a' :
-			reward = 1
+			reward = self.terminal_reward
 		return reward
 
 	def draw_graph(self):
