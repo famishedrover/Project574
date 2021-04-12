@@ -17,9 +17,9 @@ pip3 install -e .
 
 ## Commands to run
 ```
-python3 -m scripts.train --algo ppo --env MiniGrid-Empty-8x8-v0 --model GridWorld --save-interval 100 --frames 1000000
+python3 -m torch_rl.scripts.train --algo ppo --env MiniGrid-Empty-8x8-v0 --model GridWorld --save-interval 100 --frames 1000000
 tensorboard --logdir storage/GridWorld
-python3 -m scripts.visualize --algo ppo --env MiniGrid-Empty-8x8-v0 --model GridWorld
-python3 -m scripts.evaluate --algo ppo --env MiniGrid-Empty-8x8-v0 --model GridWorld
+python3 -m torch_rl.scripts.visualize --env MiniGrid-Empty-8x8-v0 --model GridWorld
+python3 -m torch_rl.scripts.evaluate --env MiniGrid-Empty-8x8-v0 --model GridWorld
 
 ```
