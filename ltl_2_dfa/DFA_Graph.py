@@ -37,6 +37,10 @@ class DFA (BaseGraph):
 
 
 
+	def reset(self):
+		self.counter = 0
+		self.current_state = self.init_node
+		
 
 	def transition(self, s):
 		edges = self.G.edges(self.current_state, data=True)

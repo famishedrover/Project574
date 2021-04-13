@@ -29,3 +29,6 @@ class DFAWrapper() :
 		return self.dfa.get_reward()
 
 
+	def reset(self): 
+		self.dfa.reset()
+		# self.classifier = RunClassifier()
