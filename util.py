@@ -60,8 +60,8 @@ def get_dfa_list(nprocs):
     final_list = []
     for i in range(nprocs):
         dfa_list =[]
-        # dfa_paths = [["./ltl_2_dfa/neverClaimFiles/never_claim_4.txt",1],["./ltl_2_dfa/neverClaimFiles/never_claim_5.txt",-5]]
-        dfa_paths = [["./ltl_2_dfa/neverClaimFiles/never_claim_4.txt",1]]
+        dfa_paths = [["./ltl_2_dfa/neverClaimFiles/never_claim_4.txt",1],["./ltl_2_dfa/neverClaimFiles/never_claim_5.txt",-5]]
+        # dfa_paths = [["./ltl_2_dfa/neverClaimFiles/never_claim_4.txt",1]]
         for dfa_name in dfa_paths:
             dfa_list.append(DFAWrapper(*dfa_name))
         final_list.append(dfa_list)
