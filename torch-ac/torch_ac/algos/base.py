@@ -47,7 +47,7 @@ class BaseAlgo(ABC):
         # Store parameters
         self.dfa_list = dfa_list
         # self.env = ParallelEnv(envs)
-        self.env = ParallelEnv(envs)
+        self.env = ParallelEnv(envs,self.dfa_list)
         self.acmodel = acmodel
         self.device = device
         self.num_frames_per_proc = num_frames_per_proc
@@ -140,6 +140,7 @@ class BaseAlgo(ABC):
             obs, reward, done, _ = self.env.step(action.cpu().numpy())
 
             reward = tuple([x*100 for x in reward])
+            reward = tuple([x-1.5 for x in reward])
 
             # Update experiences values
 
