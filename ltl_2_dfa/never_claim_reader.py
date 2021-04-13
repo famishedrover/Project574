@@ -130,7 +130,7 @@ class NeverClaim:
 
 		for node in G.nodes : 
 			if(len(G.edges(node)) == 0): 
-				G.add_edge(node, node, data='true')
+				G.add_edge(node, node, data='True')
 
 		for node in G.nodes : 
 			c = 'd'
