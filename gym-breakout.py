@@ -82,6 +82,10 @@ class Breakout(object):
 
 		if fluent == "is_clear_left":
 			label = self.is_clear_left(frame)
+		elif fluent == "is_clear_center":
+			label = self.is_clear_center(frame)
+		elif fluent == "is_clear_right":
+			label = self.is_clear_right(frame)
 		else:
 			print("NO ARGUEMENT PASSED")
 
@@ -123,6 +127,7 @@ class Breakout(object):
 
 		return
 
+
 	def is_clear_left(self,img):
 		for stride in range(1, int(self.n_bricks_per_row/3)+1):
 			self.generate_samples(img, 'neg')
@@ -130,16 +135,42 @@ class Breakout(object):
 				for row in range(self.row_begin, self.row_end+1):
 					if sum(img[row][col]) in self.sum_array:
 						img[row][col] = np.array([0, 0, 0])
-
-			# cv2.imwrite("./samples/test.png", cv2.cvtColor(img, cv2.COLOR_RGB2BGR))	
+			# cv2.imwrite("./breakout_data/test.png", cv2.cvtColor(img, cv2.COLOR_RGB2BGR))	
 		self.generate_samples(img, 'pos')
-				
 
 			# cv2.imshow('someshit', img)
 			# cv2.waitKey(0)
 
 		
+	def is_clear_center(self,img):
+		for stride in range(1, int(self.n_bricks_per_row/3)+1):
+			self.generate_samples(img, 'neg')
+			center_begin = self.col_begin+int(self.n_bricks_per_row/3) * self.brick_width
+			for col in range(center_begin, center_begin+self.brick_width*stride):
+				for row in range(self.row_begin, self.row_end+1):
+					if sum(img[row][col]) in self.sum_array:
+						img[row][col] = np.array([0, 0, 0])
 
+			# cv2.imwrite("./breakout_data/test.png", cv2.cvtColor(img, cv2.COLOR_RGB2BGR))	
+		self.generate_samples(img, 'pos')
+
+			# cv2.imshow('someshit', img)
+			# cv2.waitKey(0)
+
+	def is_clear_right(self,img):
+		for stride in range(1, int(self.n_bricks_per_row/3)+2):
+			self.generate_samples(img, 'neg')
+			center_end = self.col_begin+int(self.n_bricks_per_row/3) * self.brick_width * 2
+			for col in range(center_end, center_end+self.brick_width*stride):
+				for row in range(self.row_begin, self.row_end+1):
+					if sum(img[row][col]) in self.sum_array:
+						img[row][col] = np.array([0, 0, 0])
+
+			# cv2.imwrite("./breakout_data/test.png", cv2.cvtColor(img, cv2.COLOR_RGB2BGR))	
+		self.generate_samples(img, 'pos')
+
+			# cv2.imshow('someshit', img)
+			# cv2.waitKey(0)
 
 if __name__ == "__main__":
 	fluent = sys.argv[1]
