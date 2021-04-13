@@ -1,0 +1,11 @@
+Graphviz 
+Ltl2DFA
+pyGraphviz
+Networkx
+
+gym
+gym-minigrid
+torch==1.8.1
+torchvision
+tensorboardX>=1.6
+numpy>=1.3
