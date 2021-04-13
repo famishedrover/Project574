@@ -63,31 +63,41 @@ class RunClassifier :
 		image = image_transforms(image)
 		return image
 
+
 	def make_prediction(self,image):
 		tensor_image = self.transform_image(image)
 		tensor_image = tensor_image.unsqueeze(0)
 
 		self.prediction_dict = {}
+		self.prediction_confidence = {}
 
 		self.prediction_dict['true'] = True
+		self.prediction_confidence['true'] = 1
+		
 
 		for x in self.fluent_names : 
 			probs = GET_SOFTMAX(self.models[x](tensor_image)).detach()[0]
 			pos_probs = probs[1]
 
 			# print ("fluent : ", x, pos_probs)
+			self.prediction_confidence[x] = pos_probs
 
-			if pos_probs > config.THRESHOLD  : 
+			if pos_probs > 0.5 : 
 				self.prediction_dict[x] = True
-				self.prediction_dict[x + "_l"] = False 
-			elif pos_probs > 0.5 : 
+			else :
 				self.prediction_dict[x] = False
-				self.prediction_dict[x + "_l"] = True
-			else : 
-				self.prediction_dict[x] = False
-				self.prediction_dict[x + "_l"] = False
 
-		return self.prediction_dict
+			# if pos_probs > config.THRESHOLD  : 
+			# 	self.prediction_dict[x] = True
+			# 	self.prediction_dict[x + "_l"] = False 
+			# elif pos_probs > 0.5 : 
+			# 	self.prediction_dict[x] = False
+			# 	self.prediction_dict[x + "_l"] = True
+			# else : 
+			# 	self.prediction_dict[x] = False
+			# 	self.prediction_dict[x + "_l"] = False
+
+		return self.prediction_dict, self.prediction_confidence
 
 
 

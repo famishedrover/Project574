@@ -18,8 +18,8 @@ class DFAWrapper() :
 
 	def get_dfa_state(self,image):
 		# Transition on this image. 
-		prediction_list = self.classifier.make_prediction(image)
-		self.dfa.transition(prediction_list)
+		prediction_list, prediction_confidence = self.classifier.make_prediction(image)
+		self.dfa.transition(prediction_list, prediction_confidence)
 		return self.dfa.current_state
 
 	def get_current_state(self):

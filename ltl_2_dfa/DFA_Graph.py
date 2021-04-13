@@ -12,6 +12,8 @@ import time
 
 import os 
 
+import human_observation.config as human_obs_config
+
 
 TEMPORARY_DIR = "./ltl_2_dfa/tmp"
 
@@ -42,7 +44,14 @@ class DFA (BaseGraph):
 		self.current_state = self.init_node
 		
 
-	def transition(self, s):
+	def parse_formula_for_fluents(formula):
+		pass
+
+
+	def transition(self, s, prediction_confidence = None):
+
+		self.current_reward = 0
+
 		edges = self.G.edges(self.current_state, data=True)
 
 		true_transitions = []
@@ -70,6 +79,25 @@ class DFA (BaseGraph):
 				del true_transitions[true_transition_idx]
 
 		
+
+		# true_transitions[0][0] is the transition we wish to take. Just count the number of 
+		# lows here. 
+
+
+		
+		eval_string = true_transitions[0][1]
+		symbol_table = self.ncm.SymbolTable
+
+		this_reward = 0
+
+		for symbol in symbol_table : 
+			if symbol in eval_string : 
+				# print (symbol, prediction_confidence[symbol])
+				if(prediction_confidence[symbol] >= 0.5 and prediction_confidence[symbol] < human_obs_config.THRESHOLD) : 
+					this_reward -= 1
+
+		self.current_reward +=  this_reward
+
 		self.current_state = true_transitions[0][0]
 		self.counter += 1	
 
@@ -82,10 +110,12 @@ class DFA (BaseGraph):
 
 	def get_reward(self):
 		# states can be "i", "a", "d"
-		reward = 0
 		if self.G.nodes[self.current_state]['type'] == 'a' :
-			reward = self.terminal_reward
-		return reward
+			self.current_reward += self.terminal_reward
+
+		return self.current_reward
+
+
 
 	def draw_graph(self):
 

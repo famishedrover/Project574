@@ -184,3 +184,6 @@ if __name__ == "__main__" :
 	G = ncm.getnxGraph()
 	print (G.nodes())
 	print (G.edges(data=True))
+
+
+	print(ncm.SymbolTable)
