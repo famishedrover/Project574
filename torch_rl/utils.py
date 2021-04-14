@@ -205,7 +205,6 @@ def get_status(model_dir):
     path = get_status_path(model_dir)
     return torch.load(path)
 
-
 def save_status(status, model_dir):
     path = get_status_path(model_dir)
     create_folders_if_necessary(path)
