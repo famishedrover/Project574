@@ -126,7 +126,7 @@ class NeverClaim:
 
 
 		# Handles cases when there is only one edge to itself, represented by "skip all"
-		# which is a self loop as true.
+		# which is a self loop as True.
 
 		for node in G.nodes : 
 			if(len(G.edges(node)) == 0): 
