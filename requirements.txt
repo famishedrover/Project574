@@ -20,7 +20,6 @@ scipy==1.5.4
 six==1.15.0
 tensorboardX==2.2
 torch==1.8.1+cu111
-torch-ac @ file:///home/mverma13/cse574/project/torch-ac
 torchaudio==0.8.1
 torchvision==0.9.1+cu111
 typing-extensions==3.7.4.3
