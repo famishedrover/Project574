@@ -5,6 +5,8 @@ import torch
 
 import torch_rl.utils as utils
 
+import os 
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 # Parse arguments
 import util
@@ -89,6 +91,16 @@ for episode in range(args.episodes):
             frames.append(numpy.moveaxis(env.render("rgb_array"), 2, 0))
 
         action = agent.get_action(obs)
+
+        pro = agent.get_action_probs(obs).sample().numpy()
+
+        print (pro, agent.get_action_probs(obs).probs)
+
+        action = pro 
+
+        x = input()
+        action = int(x)
+
         obs, reward, done, _ = env.step(action)
         obs = util.update_obs(dfa_list,obs)
         reward = util.update_reward(dfa_list,reward)

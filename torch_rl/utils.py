@@ -66,6 +66,18 @@ class Agent:
     def get_action(self, obs):
         return self.get_actions([obs])[0]
 
+
+    def get_action_probs(self, obs):
+        preprocessed_obss = self.preprocess_obss([obs], device=self.device)
+
+        with torch.no_grad():
+            if self.acmodel.recurrent:
+                dist, _, self.memories = self.acmodel(preprocessed_obss, self.memories)
+            else:
+                dist, _ = self.acmodel(preprocessed_obss)
+
+        return dist
+
     def analyze_feedbacks(self, rewards, dones):
         if self.acmodel.recurrent:
             masks = 1 - torch.tensor(dones, dtype=torch.float, device=self.device).unsqueeze(1)
@@ -203,7 +215,7 @@ def get_status_path(model_dir):
 
 def get_status(model_dir):
     path = get_status_path(model_dir)
-    return torch.load(path,map_location=lambda storage, loc: storage)
+    return torch.load(path, map_location=lambda storage, loc: storage)
 
 
 def save_status(status, model_dir):
