@@ -44,7 +44,8 @@ class QNetwork(nn.Module):
         x = F.relu(self.bn3(self.conv3(x)))
 
         x = x.view(x.size(0), -1)
-        x = torch.hstack([x,q])
+        # x = torch.hstack([x,q])
+        x = torch.cat([x,q], dim=1)
 
         x = self.head(x)
         x = self.head2(x)
@@ -55,7 +56,7 @@ class QNetwork(nn.Module):
 if __name__ == "__main__" : 
     x = torch.zeros((1,64,64,3))
     # x = x.permute(0,3,1,2)
-    model = QNetwork((84,84), 7, 0, 6)
+    model = QNetwork((64,64), 7, 0, 6)
 
     q = torch.zeros(1,6)
 
