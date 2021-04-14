@@ -30,7 +30,7 @@ class DFAEnvWrapper(RGBImgObsWrapper):
 			next_q_states.append(q_onehot)
 
 		# next_q_states = torch.hstack(next_q_states)
-		next_q_states = torch.cat(next_q_states, dim=1)
+		next_q_states = torch.cat(next_q_states, dim=0)
 		next_state['q'] = next_q_states
 
 		if self.step_cost : 
@@ -51,7 +51,7 @@ class DFAEnvWrapper(RGBImgObsWrapper):
 			next_q_states.append(q_onehot)
 
 		# next_q_states = torch.hstack(next_q_states)
-		next_q_states = torch.cat(next_q_states, dim=1)
+		next_q_states = torch.cat(next_q_states, dim=0)
 		obs['q'] = next_q_states
 
 

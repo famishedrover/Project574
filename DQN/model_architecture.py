@@ -45,7 +45,7 @@ class QNetwork(nn.Module):
 
         x = x.view(x.size(0), -1)
         # x = torch.hstack([x,q])
-        x = torch.cat([x,q], dim=1)
+        x = torch.cat([x,q], dim=0)
 
         x = self.head(x)
         x = self.head2(x)
