@@ -32,6 +32,8 @@ parser.add_argument("--procs", type=int, default=16,
                     help="number of processes (default: 16)")
 parser.add_argument("--frames", type=int, default=10**7,
                     help="number of frames of training (default: 1e7)")
+parser.add_argument("--gpuidx", type=int, default=-1,
+                    help="GPU Index if specific GPU should be chosen.")
 
 ## Parameters for main algorithm #default
 # parser.add_argument("--epochs", type=int, default=4,
@@ -122,7 +124,14 @@ utils.seed(args.seed)
 # Set device
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+if args.gpuidx >= 0 : 
+    device = torch.device("cuda:" + str(args.gpuidx) if torch.cuda.is_available() else "cpu")
+
 txt_logger.info(f"Device: {device}\n")
+
+
+
 
 # Load environments
 
