@@ -139,8 +139,10 @@ class BaseAlgo(ABC):
 
             obs, reward, done, _ = self.env.step(action.cpu().numpy())
 
-            reward = tuple([x*100 for x in reward])
+            reward = tuple([x*1000 for x in reward])
             reward = tuple([x-1.5 for x in reward])
+
+            # print (reward)
 
             # Update experiences values
 
@@ -148,6 +150,7 @@ class BaseAlgo(ABC):
             self.obs = util.update_obs(self.dfa_list, obs)
             # self.obs = obs
             reward = util.update_reward(self.dfa_list, reward)
+            # print(reward)
             if self.acmodel.recurrent:
                 self.memories[i] = self.memory
                 self.memory = memory
