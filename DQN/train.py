@@ -6,11 +6,12 @@ from human_observation.human_obs import DFAWrapper
 from gym_minigrid.wrappers import *
 from DQN.EnvDFAWrapper import DFAEnvWrapper
 
+from matplotlib import pyplot as plt 
 
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_6.txt"
-dfa = DFAWrapper(LTL_PATH, 5)
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_6.txt"
-dfa2 = DFAWrapper(LTL_PATH, 1)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_5.txt"
+dfa = DFAWrapper(LTL_PATH, reward=5)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_5.txt"
+dfa2 = DFAWrapper(LTL_PATH, reward=5)
 
 
 n = 6
@@ -18,7 +19,7 @@ n = 6
 env_name = "MiniGrid-Empty-{}x{}-v0".format(n+2,n+2)
 env = gym.make(env_name)
 env = RGBImgObsWrapper(env)
-env = DFAEnvWrapper(env, [dfa, dfa2], step_cost=-1, env_terminal_reward=100)
+env = DFAEnvWrapper(env, [dfa, dfa2], step_cost=-0.1, env_terminal_reward=100)
 
 obs = env.reset()
 
@@ -32,7 +33,15 @@ h,w,_ = obs['image'].shape
 dfas_size = obs['q'].shape[0]
 print ("DFAS SIZE = ", dfas_size)
 
-action_size = env.action_space.n
+
+
+
+
+
+# action_size = env.action_space.n
+action_size = 3
+
+
 seed = 1
 
 agent = Agent((h,w),action_size, seed, dfas_size)
@@ -57,6 +66,7 @@ def dqn(n_episodes= 200, max_t = 256, eps_start=1.0, eps_end = 0.01,
 		state = env.reset()
 		score = 0
 		for t in range(max_t):
+			env.render()
 			action = agent.act(state,eps)
 			next_state,reward,done,_ = env.step(action)
 			agent.step(state,action,reward,next_state,done)
@@ -74,10 +84,10 @@ def dqn(n_episodes= 200, max_t = 256, eps_start=1.0, eps_end = 0.01,
 				# print('\rEpisode {}\tAverage Score {:.2f}'.format(i_episode,np.mean(scores_window)))
 
 
-			if np.mean(scores_window)>=0.0:
-				# print('\nEnvironment solve in {:d} epsiodes!\tAverage score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
-				torch.save(agent.qnetwork_local.state_dict(),'checkpoint.pth')
-				break
+		if score>=0.0:
+			# print('\nEnvironment solve in {:d} epsiodes!\tAverage score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
+			torch.save(agent.qnetwork_local.state_dict(),'./DQN/models/checkpoint'+str(i_episode)+'.pth')
+
 
 		print('\rEpisode {}\tEpisode Score {:.2f}'.format(i_episode,score))
 

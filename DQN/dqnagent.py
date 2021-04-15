@@ -11,7 +11,7 @@ import torch.optim as optim
 
 
 BUFFER_SIZE = int(1e5)  #replay buffer size
-BATCH_SIZE = 512         # minibatch size
+BATCH_SIZE = 128         # minibatch size
 GAMMA = 0.99            # discount factor
 TAU = 1e-3              # for soft update of target parameters
 LR = 5e-4               # learning rate
@@ -22,7 +22,7 @@ device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 class Agent():
     """Interacts with and learns form environment."""
     
-    def __init__(self, state_size, action_size, seed, dfas_size):
+    def __init__(self, state_size, action_size, seed, dfas_size, rmax=100):
         """Initialize an Agent object.
         
         Params
@@ -47,6 +47,7 @@ class Agent():
         self.memory = ReplayBuffer(action_size, BUFFER_SIZE,BATCH_SIZE,seed)
         # Initialize time step (for updating every UPDATE_EVERY steps)
         self.t_step = 0
+        self.rmax = rmax 
         
     def step(self, state, action, reward, next_step, done):
         # Save experience in replay memory
@@ -60,6 +61,12 @@ class Agent():
             if len(self.memory)>BATCH_SIZE:
                 experience = self.memory.sample()
                 self.learn(experience, GAMMA)
+
+
+    def read_model(self, path) : 
+        self.qnetwork_local.load_state_dict(torch.load(path))
+        self.qnetwork_local.eval()
+
     def act(self, state, eps = 0):
         """Returns action for given state as per current policy
         Params
@@ -142,6 +149,10 @@ class ReplayBuffer:
         
         self.action_size = action_size
         self.memory = deque(maxlen=buffer_size)
+        self.pos_memory = deque(maxlen=buffer_size)
+
+        self.eps = 0.01
+
         self.batch_size = batch_size
         self.experiences = namedtuple("Experience", field_names=["state",
                                                                "action",
@@ -156,10 +167,22 @@ class ReplayBuffer:
         """Add a new experience to memory."""
         e = self.experiences(state['image'], action, reward, next_state['image'], done, state['q'], next_state['q'])
         self.memory.append(e)
+
+        if(reward > 0):
+            self.pos_memory.append(e)
+
         
     def sample(self):
         """Randomly sample a batch of experiences from memory"""
-        experiences = random.sample(self.memory,k=self.batch_size)
+        print ("MEMORY SIZE", len(self.memory), len(self.pos_memory), self.batch_size)
+
+        pos_exp_count = int(min(len(self.pos_memory), self.batch_size/4))
+        other_exp_count = self.batch_size - pos_exp_count
+
+        experiences = random.sample(self.memory,k= other_exp_count)
+        pos_experiences = random.sample(self.pos_memory, k= pos_exp_count)
+        experiences = experiences + pos_experiences
+
         
         # for e in experiences : 
         #     print ("EXPERIENCE : ")

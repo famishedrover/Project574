@@ -14,6 +14,7 @@ class DFAEnvWrapper(RGBImgObsWrapper):
 		self.step_cost = step_cost
 		self.env_terminal_reward = env_terminal_reward
 		
+		
 	def step(self, action):
 		next_state, reward, done, info = self.env.step(action)
 		reward *= self.env_terminal_reward
@@ -66,11 +67,11 @@ if __name__ == "__main__":
 	env = RGBImgObsWrapper(env)
 
 	LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_6.txt"
-	dfa = DFAWrapper(LTL_PATH, 1)
-	dfa2 = DFAWrapper(LTL_PATH, 1)
+	dfa = DFAWrapper(LTL_PATH, 5)
+	dfa2 = DFAWrapper(LTL_PATH, 4)
 
 
-	env = DFAEnvWrapper(env, [dfa, dfa2])
+	env = DFAEnvWrapper(env, [dfa, dfa2], env_terminal_reward=100)
 
 
 
@@ -89,7 +90,8 @@ if __name__ == "__main__":
 
 		act = input()
 		obs,reward,done,info = env.step(int(act))
-		print ("DFA : ", obs['q'])
+		# print ("DFA : ", obs['q'])
+		# print ("reward", reward)
 
 		if done : 
 			break
