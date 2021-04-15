@@ -9,10 +9,10 @@ from DQN.AtariDQNEnvWrapper import AtariDQNEnvWrapper
 
 from matplotlib import pyplot as plt 
 
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_8.txt"
-dfa = DFAWrapper(LTL_PATH, reward=5, low_reward = 2)
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_8.txt"
-dfa2 = DFAWrapper(LTL_PATH, reward=5, low_reward = 2)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_9.txt"
+dfa = DFAWrapper(LTL_PATH, reward=1000, low_reward = 2)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_9.txt"
+dfa2 = DFAWrapper(LTL_PATH, reward=1000, low_reward = 2)
 
 
 n = 6
