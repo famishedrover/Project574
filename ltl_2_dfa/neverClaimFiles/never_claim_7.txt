@@ -1,13 +1,13 @@
-never { /* F((t & XG!t & G!b) | (b & G!t & XG!b)) */
+never { /* F((top & XG!top & G!bot) | (bot & G!top & XG!bot)) */
 T0_init:
   if
   :: (true) -> goto T0_init
-  :: (((b) && (!(t))) || ((!(b)) && (t))) -> goto accept_S1
+  :: (((bot) && (!(top))) || ((!(bot)) && (top))) -> goto accept_S1
   fi;
 accept_S1:
   if
-  :: ((!(b)) && (!(t))) -> goto accept_S1
-  :: ((b) || (t)) -> goto T0_S2
+  :: ((!(bot)) && (!(top))) -> goto accept_S1
+  :: ((bot) || (top)) -> goto T0_S2
   fi;
 T0_S2:
   if
@@ -15,7 +15,9 @@ T0_S2:
   fi;
 }
 
-
-# 
+# COMMENT
 Either goto t or b, but not both. 
 That too only once. 
+
+
+F(top & X(!F(top)) & !F(bot)) | F(bot & X(!F(bot)) &!F(top))

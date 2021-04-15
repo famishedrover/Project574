@@ -6,10 +6,12 @@ from ltl_2_dfa import DFA_Graph
 
 class DFAWrapper() : 
 
-	def __init__(self, path, reward):
+	def __init__(self, path, reward, low_reward):
 		self.terminal_reward = reward
+		self.low_reward = low_reward
+
 		self.NEVER_CLAIM_PATH = path 
-		self.dfa = DFA_Graph.DFA(self.NEVER_CLAIM_PATH, reward=self.terminal_reward)
+		self.dfa = DFA_Graph.DFA(self.NEVER_CLAIM_PATH, reward=self.terminal_reward, low_reward=self.low_reward)
 		self.classifier = RunClassifier()
 
 
@@ -19,6 +21,8 @@ class DFAWrapper() :
 	def get_dfa_state(self,image):
 		# Transition on this image. 
 		prediction_list, prediction_confidence = self.classifier.make_prediction(image)
+		print (prediction_confidence)
+		
 		self.dfa.transition(prediction_list, prediction_confidence)
 		return self.dfa.current_state
 

@@ -33,8 +33,6 @@ h,w,_ = obs['image'].shape
 dfas_size = obs['q'].shape[0]
 print ("DFAS SIZE = ", dfas_size)
 
-
-
 # print (env.unwrapped())
 
-print (env.state)
+print (env.agent_pos)

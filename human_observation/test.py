@@ -1,7 +1,7 @@
 from human_observation.human_obs import DFAWrapper
 from gym_minigrid.wrappers import *
 
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_4.txt"
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
 
 dfa = DFAWrapper(LTL_PATH, 1)
 n = 6

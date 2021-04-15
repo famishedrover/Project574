@@ -22,7 +22,7 @@ if not os.path.exists(TEMPORARY_DIR):
 
 
 class DFA (BaseGraph):
-	def __init__(self, PATH, reward=1) : 
+	def __init__(self, PATH, reward=1, low_reward=1) : 
 		# PATH : NEVERCLAIM PATH 
 
 		self.ncm = NeverClaim(PATH)
@@ -36,6 +36,7 @@ class DFA (BaseGraph):
 		self.counter = 0
 
 		self.terminal_reward = reward
+		self.low_reward = low_reward
 
 
 
@@ -94,7 +95,7 @@ class DFA (BaseGraph):
 			if symbol in eval_string : 
 				# print (symbol, prediction_confidence[symbol])
 				if(prediction_confidence[symbol] >= 0.5 and prediction_confidence[symbol] < human_obs_config.THRESHOLD) : 
-					this_reward -= 1
+					this_reward -= self.low_reward
 
 		self.current_reward +=  this_reward
 
