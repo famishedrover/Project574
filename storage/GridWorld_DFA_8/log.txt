@@ -1,0 +1,125 @@
+/home/naman/Project574/torch_rl/scripts/train.py --algo a2c --env MiniGrid-Empty-8x8-v0 --model GridWorld_DFA_8 --save-interval 5 --frames 10000000000 --frames-per-proc 32
+
+Namespace(algo='a2c', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-Empty-8x8-v0', epochs=4, frames=10000000000, frames_per_proc=32, gae_lambda=0.95, gpuidx=-1, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='GridWorld_DFA_8', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=5, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cuda
+
+Environments loaded
+
+Training status loaded
+
+Observations preprocessor loaded
+Model loaded
+
+ACModel(
+  (image_conv): Sequential(
+    (0): Conv2d(3, 16, kernel_size=(2, 2), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
+    (4): ReLU()
+    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
+    (6): ReLU()
+  )
+  (actor): Sequential(
+    (0): Linear(in_features=53827, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=7, bias=True)
+  )
+  (critic): Sequential(
+    (0): Linear(in_features=53827, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+Optimizer loaded
+
+Status saved
+/home/naman/Project574/torch_rl/scripts/train.py --algo a2c --env MiniGrid-Empty-8x8-v0 --model GridWorld_DFA_8 --save-interval 5 --frames 10000000000 --frames-per-proc 32
+
+Namespace(algo='a2c', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-Empty-8x8-v0', epochs=4, frames=10000000000, frames_per_proc=32, gae_lambda=0.95, gpuidx=-1, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='GridWorld_DFA_8', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=5, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cuda
+
+Environments loaded
+
+Training status loaded
+
+Observations preprocessor loaded
+Model loaded
+
+ACModel(
+  (image_conv): Sequential(
+    (0): Conv2d(3, 16, kernel_size=(2, 2), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
+    (4): ReLU()
+    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
+    (6): ReLU()
+  )
+  (actor): Sequential(
+    (0): Linear(in_features=53827, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=7, bias=True)
+  )
+  (critic): Sequential(
+    (0): Linear(in_features=53827, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+Optimizer loaded
+
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
+Status saved
