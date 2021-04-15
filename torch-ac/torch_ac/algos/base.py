@@ -141,8 +141,8 @@ class BaseAlgo(ABC):
 
             obs, reward, done, _ = self.env.step(action.cpu().numpy())
 
-            reward = tuple([x*10 for x in reward])
-            reward = tuple([x-0 for x in reward])
+            reward = tuple([x*100 for x in reward])
+            reward = tuple([x-1.5 for x in reward])
 
             # print (reward)
 
