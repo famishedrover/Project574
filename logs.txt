@@ -3,3 +3,4 @@ python3 -m torch_rl.scripts.train --algo a2c --env MiniGrid-Empty-8x8-v0 --model
 
 step cost -1.5 
 single on edge dfa
+dfa_4 
