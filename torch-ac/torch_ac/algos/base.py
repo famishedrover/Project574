@@ -136,11 +136,13 @@ class BaseAlgo(ABC):
                 else:
                     dist, value = self.acmodel(preprocessed_obs)
             action = dist.sample()
+            # action = (dist.probs.max(1, keepdim=True)[1]).squeeze(1)
+
 
             obs, reward, done, _ = self.env.step(action.cpu().numpy())
 
-            reward = tuple([x*1000 for x in reward])
-            reward = tuple([x-1.5 for x in reward])
+            reward = tuple([x*10 for x in reward])
+            reward = tuple([x-0 for x in reward])
 
             # print (reward)
 

@@ -1,0 +1,6 @@
+Gridworld_DFA_neg_step_cost_a2c
+python3 -m torch_rl.scripts.train --algo a2c --env MiniGrid-Empty-8x8-v0 --model GridWorld_DFA_neg_step_cost_a2c --save-interval 5 --frames 10000000000 
+
+step cost -1.5 
+single on edge dfa
+dfa_4 

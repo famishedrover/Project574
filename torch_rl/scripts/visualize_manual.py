@@ -92,7 +92,7 @@ for episode in range(args.episodes):
 
         action = agent.get_action(obs)
 
-        pro = agent.get_action_probs(obs).sample().numpy()
+        pro = agent.get_action_probs(obs).sample().cpu().numpy()
 
         print (pro, agent.get_action_probs(obs).probs)
 
