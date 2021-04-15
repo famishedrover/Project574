@@ -1,0 +1,24 @@
+never { /* F(top_right_c & XG!top_right_c) */
+T0_init:
+  if
+  :: (true) -> goto T0_init
+  :: (top_right_c) -> goto accept_S1
+  fi;
+accept_S1:
+  if
+  :: (!(top_right_c)) -> goto accept_S1
+  :: (top_right_c) -> goto T0_S2
+  fi;
+T0_S2:
+  if
+  :: (true) -> goto T0_S2
+  fi;
+}
+
+
+
+# COMMENT 
+
+F(top_right_c & X (!F(top_right_c)))
+
+Exactly once on top-right corner.

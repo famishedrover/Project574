@@ -7,9 +7,9 @@ from ltl_2_dfa import DFA_Graph
 class DFAWrapper() : 
 
 	def __init__(self, path, reward):
-		self.terminal_reward = reward 
+		self.terminal_reward = reward
 		self.NEVER_CLAIM_PATH = path 
-		self.dfa = DFA_Graph.DFA(self.NEVER_CLAIM_PATH, self.terminal_reward)
+		self.dfa = DFA_Graph.DFA(self.NEVER_CLAIM_PATH, reward=self.terminal_reward)
 		self.classifier = RunClassifier()
 
 
