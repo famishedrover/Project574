@@ -11,13 +11,13 @@ import torch.optim as optim
 
 
 BUFFER_SIZE = int(1e5)  #replay buffer size
-BATCH_SIZE = 128         # minibatch size
+BATCH_SIZE = 512         # minibatch size
 GAMMA = 0.99            # discount factor
 TAU = 1e-3              # for soft update of target parameters
 LR = 5e-4               # learning rate
-UPDATE_EVERY = 16        # how often to update the network
+UPDATE_EVERY = 32        # how often to update the network
 
-device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class Agent():
     """Interacts with and learns form environment."""
@@ -174,7 +174,7 @@ class ReplayBuffer:
         
     def sample(self):
         """Randomly sample a batch of experiences from memory"""
-        print ("MEMORY SIZE", len(self.memory), len(self.pos_memory), self.batch_size)
+        # print ("MEMORY SIZE", len(self.memory), len(self.pos_memory), self.batch_size)
 
         pos_exp_count = int(min(len(self.pos_memory), self.batch_size/4))
         other_exp_count = self.batch_size - pos_exp_count

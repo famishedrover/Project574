@@ -5,21 +5,29 @@ import torch
 from human_observation.human_obs import DFAWrapper
 from gym_minigrid.wrappers import *
 from DQN.EnvDFAWrapper import DFAEnvWrapper
+from DQN.AtariDQNEnvWrapper import AtariDQNEnvWrapper
 
 from matplotlib import pyplot as plt 
 
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_8.txt"
 dfa = DFAWrapper(LTL_PATH, reward=5, low_reward = 2)
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_8.txt"
 dfa2 = DFAWrapper(LTL_PATH, reward=5, low_reward = 2)
 
 
 n = 6
 
-env_name = "MiniGrid-Empty-{}x{}-v0".format(n+2,n+2)
+# env_name = "MiniGrid-Empty-{}x{}-v0".format(n+2,n+2)
+env_name = "Breakout-v0"
 env = gym.make(env_name)
-env = RGBImgObsWrapper(env)
-env = DFAEnvWrapper(env, [dfa, dfa2], step_cost=-0.1, env_terminal_reward=100)
+
+if "Breakout" in env_name : 
+	env = AtariDQNEnvWrapper(env, [dfa, dfa2], step_cost=-0.1, env_terminal_reward=1)
+	action_size = env.action_space.n
+else : 
+	env = RGBImgObsWrapper(env)
+	env = DFAEnvWrapper(env, [dfa, dfa2], step_cost=-0.1, env_terminal_reward=100)
+	action_size = 3
 
 obs = env.reset()
 
@@ -39,14 +47,14 @@ print ("DFAS SIZE = ", dfas_size)
 
 
 # action_size = env.action_space.n
-action_size = 3
+
 
 
 seed = 1
 
 agent = Agent((h,w),action_size, seed, dfas_size)
 
-def dqn(n_episodes= 200, max_t = 256, eps_start=1.0, eps_end = 0.01,
+def dqn(n_episodes= 200, max_t = 1000000, eps_start=1.0, eps_end = 0.01,
 	   eps_decay=0.996):
 	"""Deep Q-Learning
 	
@@ -66,7 +74,7 @@ def dqn(n_episodes= 200, max_t = 256, eps_start=1.0, eps_end = 0.01,
 		state = env.reset()
 		score = 0
 		for t in range(max_t):
-			env.render()
+			# env.render()
 			action = agent.act(state,eps)
 			next_state,reward,done,_ = env.step(action)
 			agent.step(state,action,reward,next_state,done)
@@ -84,9 +92,9 @@ def dqn(n_episodes= 200, max_t = 256, eps_start=1.0, eps_end = 0.01,
 				# print('\rEpisode {}\tAverage Score {:.2f}'.format(i_episode,np.mean(scores_window)))
 
 
-		if score>=0.0:
+		if score>=1.0:
 			# print('\nEnvironment solve in {:d} epsiodes!\tAverage score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
-			torch.save(agent.qnetwork_local.state_dict(),'./DQN/models/checkpoint'+str(i_episode)+'.pth')
+			torch.save(agent.qnetwork_local.state_dict(),'./DQN/breakout_model/checkpoint'+str(i_episode)+'.pth')
 
 
 		print('\rEpisode {}\tEpisode Score {:.2f}'.format(i_episode,score))

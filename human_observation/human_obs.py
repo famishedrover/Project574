@@ -21,7 +21,7 @@ class DFAWrapper() :
 	def get_dfa_state(self,image):
 		# Transition on this image. 
 		prediction_list, prediction_confidence = self.classifier.make_prediction(image)
-		print (prediction_confidence)
+		# print (prediction_confidence)
 		
 		self.dfa.transition(prediction_list, prediction_confidence)
 		return self.dfa.current_state
@@ -30,7 +30,9 @@ class DFAWrapper() :
 		return self.dfa.current_state
 
 	def get_reward(self):
-		return self.dfa.get_reward()
+		reward = self.dfa.get_reward()
+		# print (reward)
+		return reward
 
 
 	def reset(self): 
