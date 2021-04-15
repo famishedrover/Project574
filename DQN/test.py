@@ -9,10 +9,10 @@ from DQN.EnvDFAWrapper import DFAEnvWrapper
 from matplotlib import pyplot as plt 
 
 
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_5.txt"
-dfa = DFAWrapper(LTL_PATH, reward=5)
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_5.txt"
-dfa2 = DFAWrapper(LTL_PATH, reward=5)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
+dfa = DFAWrapper(LTL_PATH, reward=5, low_reward=1)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
+dfa2 = DFAWrapper(LTL_PATH, reward=5, low_reward=1)
 
 
 n = 6
@@ -58,7 +58,7 @@ eps = 0.01
 eps_decay = 0.996
 eps_end = 0.001
 
-agent.read_model("./DQN/models/Good_models3/checkpoint4.pth")
+agent.read_model("./DQN/models/dfa_7/checkpoint7.pth")
 
 for i in range(NUM_EPISODES) : 
 
@@ -67,6 +67,7 @@ for i in range(NUM_EPISODES) :
 	while not done : 
 		env.render()
 		action = agent.act(state,eps)
+		# action = int(input())
 		next_state,reward,done,_ = env.step(action)
 
 		# agent.step(state,action,reward,next_state,done)

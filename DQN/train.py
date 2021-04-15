@@ -8,10 +8,10 @@ from DQN.EnvDFAWrapper import DFAEnvWrapper
 
 from matplotlib import pyplot as plt 
 
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_5.txt"
-dfa = DFAWrapper(LTL_PATH, reward=5)
-LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_5.txt"
-dfa2 = DFAWrapper(LTL_PATH, reward=5)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
+dfa = DFAWrapper(LTL_PATH, reward=5, low_reward = 2)
+LTL_PATH = "./ltl_2_dfa/neverClaimFiles/never_claim_7.txt"
+dfa2 = DFAWrapper(LTL_PATH, reward=5, low_reward = 2)
 
 
 n = 6
